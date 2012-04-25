@@ -1,0 +1,273 @@
+% Created 2012-04-25 Wed 16:51
+\documentclass[11pt]{beamer}
+
+               \mode<presentation>
+
+               \usetheme{Berlin}
+
+               \usecolortheme{beetle}
+
+               \beamertemplateballitem
+
+               \setbeameroption{show notes}
+               \usepackage[utf8]{inputenc}
+
+               \usepackage[T1]{fontenc}
+
+               \usepackage{hyperref}
+
+               \usepackage{color}
+               \usepackage{listings}
+               \lstset{numbers=none,language=[ISO]C++,tabsize=4,
+             frame=single,
+             basicstyle=\small,
+             showspaces=false,showstringspaces=false,
+             showtabs=false,
+             keywordstyle=\color{blue}\bfseries,
+             commentstyle=\color{red},
+             }
+
+               \usepackage{verbatim}
+
+               \institute{Linuxwochenende 2011}
+
+                \subject{{{{beamersubject}}}}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Penetrationstests mit Metasploit}
+\author{Michael Kohl}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.8.03}}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}
+\frametitle{Outline}
+\setcounter{tocdepth}{3}
+\tableofcontents
+\end{frame}
+
+\section{Einleitung}
+\label{sec-1}
+\begin{frame}[fragile]\frametitle{Über mich}
+\label{sec-1-1}
+\begin{itemize}
+
+\item Früher: Linux/Unix Admin / Systems Engineer\\
+\label{sec-1-1-1}%
+\item Jetzt: Rails-Entwickler, DevOps\\
+\label{sec-1-1-2}%
+\item Ab Oktober: Penetration Tester\\
+\label{sec-1-1-3}%
+\item Gentoo Entwickler, Metalab, RubyLearning, etc.\\
+\label{sec-1-1-4}%
+\end{itemize} % ends low level
+\end{frame}
+\begin{frame}[fragile]\frametitle{Warum Penetration Testing?}
+\label{sec-1-2}
+\begin{itemize}
+
+\item Schwachstellen identifizieren\\
+\label{sec-1-2-1}%
+\item Aufdecken von Fehlern aus falscher Bedienung\\
+\label{sec-1-2-2}%
+\item Erhöhung der Sicherheit auf technischer und organisatorischer Ebene\\
+\label{sec-1-2-3}%
+\item externe Validierung der Sicherheit\\
+\label{sec-1-2-4}%
+\end{itemize} % ends low level
+\end{frame}
+\section{Penetration Testing}
+\label{sec-2}
+\begin{frame}[fragile]\frametitle{Pre-Engagement}
+\label{sec-2-1}
+\begin{itemize}
+
+\item Zieldefinition (z.B. compliance)\\
+\label{sec-2-1-1}%
+\item Abklären der Rahmenbedingungen (z.B. overt/covert)\\
+\label{sec-2-1-2}%
+\item Limitierungen (z.B. nur Kernarbeitszeit, Wochenenden)\\
+\label{sec-2-1-3}%
+\item Umfang (Netzwerk, Apps, WLAN, physische Tests, Social Engineering)\\
+\label{sec-2-1-4}%
+\item Kommunikationswege definieren\\
+\label{sec-2-1-5}%
+\end{itemize} % ends low level
+\end{frame}
+\begin{frame}[fragile]\frametitle{Intelligence Gathering}
+\label{sec-2-2}
+\begin{itemize}
+
+\item Versuch möglichst viel über Ziel herauszufinden\\
+\label{sec-2-2-1}%
+\item Social Media\\
+\label{sec-2-2-2}%
+\item Footprinting\\
+\label{sec-2-2-3}%
+\item Portscans\\
+\label{sec-2-2-4}%
+\item Firewalls etc?\\
+\label{sec-2-2-5}%
+\item physische Locations\\
+\label{sec-2-2-6}%
+\end{itemize} % ends low level
+\end{frame}
+\begin{frame}[fragile]\frametitle{Threat Modeling}
+\label{sec-2-3}
+\begin{itemize}
+
+\item benutzt Informationen aus dem vorherigen Schritt\\
+\label{sec-2-3-1}%
+\item Versuch vielversprechendsten Angriffsvektor zu finden\\
+\label{sec-2-3-2}%
+\item in die Rolle des Angreifers versetzen
+\label{sec-2-3-3}%
+\begin{itemize}
+
+\item Analyse von Assets\\
+\label{sec-2-3-3-1}%
+\item Analyse der Geschäftsprozesse\\
+\label{sec-2-3-3-2}%
+\item Unternehmenstruktur\\
+\label{sec-2-3-3-3}%
+\item Attacken auf ähnliche Unternehmen\\
+\label{sec-2-3-3-4}%
+\end{itemize} % ends low level
+\end{itemize} % ends low level
+\end{frame}
+\begin{frame}[fragile]\frametitle{Vulnerability Analysis}
+\label{sec-2-4}
+\begin{itemize}
+
+\item Port- und Service-Scans\\
+\label{sec-2-4-1}%
+\item Banner Grabbing\\
+\label{sec-2-4-2}%
+\item SQL Injection Scanner\\
+\label{sec-2-4-3}%
+\item Traffic Monitoring\\
+\label{sec-2-4-4}%
+\end{itemize} % ends low level
+\end{frame}
+\begin{frame}[fragile]\frametitle{Exploitation}
+\label{sec-2-5}
+\begin{itemize}
+
+\item ``spektakulärste'' Phase\\
+\label{sec-2-5-1}%
+\item nach Indentifikation der vielversprechenden Vektoren\\
+\label{sec-2-5-2}%
+\item Exploits für bekannte Versionen\\
+\label{sec-2-5-3}%
+\item Buffer Overflows, SQL Injections, Passwort Bruteforce etc.\\
+\label{sec-2-5-4}%
+\end{itemize} % ends low level
+\end{frame}
+\begin{frame}[fragile]\frametitle{Post Exploitation}
+\label{sec-2-6}
+\begin{itemize}
+
+\item nach dem Kompromittieren eines oder mehrerer Systeme\\
+\label{sec-2-6-1}%
+\item Identifikation wichtiger Infrastruktur\\
+\label{sec-2-6-2}%
+\item Identifikation wichtigster Daten\\
+\label{sec-2-6-3}%
+\item Schwachstellen mit grösstem Business Impact\\
+\label{sec-2-6-4}%
+\item Aufräumen\\
+\label{sec-2-6-5}%
+\end{itemize} % ends low level
+\end{frame}
+\begin{frame}[fragile]\frametitle{Reporting}
+\label{sec-2-7}
+\begin{itemize}
+
+\item wichtigster Teil\\
+\label{sec-2-7-1}%
+\item was?\\
+\label{sec-2-7-2}%
+\item wie?\\
+\label{sec-2-7-3}%
+\item wie reparieren?\\
+\label{sec-2-7-4}%
+\item generelle Security, nicht nur technische Schwachstellen\\
+\label{sec-2-7-5}%
+\end{itemize} % ends low level
+\end{frame}
+\section{Metasploit}
+\label{sec-3}
+\begin{frame}[fragile]\frametitle{Metasploit Framework}
+\label{sec-3-1}
+\begin{itemize}
+
+\item Penetration Testing Framework in Ruby\\
+\label{sec-3-1-1}%
+\item Scanner/Fuzzer\\
+\label{sec-3-1-2}%
+\item Payloads\\
+\label{sec-3-1-3}%
+\item Exploits\\
+\label{sec-3-1-4}%
+\item Post-Exploitation Tools (Meterpreter)\\
+\label{sec-3-1-5}%
+\item Libraries zur Entwicklung eigener Tools\\
+\label{sec-3-1-6}%
+\end{itemize} % ends low level
+\end{frame}
+\section{Demo}
+\label{sec-4}
+\begin{frame}[fragile]\frametitle{Demo}
+\label{sec-4-1}
+\begin{itemize}
+
+\item Metasploitable VM\\
+\label{sec-4-1-1}%
+\item prinzipieller Ablauf, kein vollständiger Pen Test\\
+\label{sec-4-1-2}%
+\end{itemize} % ends low level
+\end{frame}
+\section{Ressourcen}
+\label{sec-5}
+\begin{frame}[fragile]\frametitle{Ressourcen}
+\label{sec-5-1}
+\begin{itemize}
+
+\item \href{http://de.wikipedia.org/wiki/Penetrationstest_(Informatik)}{http://de.wikipedia.org/wiki/Penetrationstest\_(Informatik)}\\
+\label{sec-5-1-1}%
+\item \href{http://www.pentest-standard.org/index.php/Main_Page}{http://www.pentest-standard.org/index.php/Main\_Page}\\
+\label{sec-5-1-2}%
+\item \href{http://www.metasploit.com/}{http://www.metasploit.com/}\\
+\label{sec-5-1-3}%
+\item \href{http://www.offensive-security.com/metasploit-unleashed/}{http://www.offensive-security.com/metasploit-unleashed/}\\
+\label{sec-5-1-4}%
+\item \href{http://nostarch.com/metasploit}{http://nostarch.com/metasploit}\\
+\label{sec-5-1-5}%
+\item \href{http://www.offensive-security.com/metasploit-unleashed/Metasploitable}{http://www.offensive-security.com/metasploit-unleashed/Metasploitable}\\
+\label{sec-5-1-6}%
+\end{itemize} % ends low level
+\end{frame}
+
+\end{document}

